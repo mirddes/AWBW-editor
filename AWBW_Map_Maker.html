@@ -1,0 +1,373 @@
+<html>
+<head>
+	<title>Headphone's AWBW Map Maker</title>
+	<script language="javascript" src="Map_Maker.js"></script>
+	<!--IE, why force me to add a protype to my otherwise perfect page?-->
+	<script type="text/javascript">
+if (!Array.prototype.indexOf)
+{
+  Array.prototype.indexOf = function(elt /*, from*/)
+  {
+    var len = this.length;
+
+    var from = Number(arguments[1]) || 0;
+    from = (from < 0)
+         ? Math.ceil(from)
+         : Math.floor(from);
+    if (from < 0)
+      from += len;
+
+    for (; from < len; from++)
+    {
+      if (from in this &&
+          this[from] === elt)
+        return from;
+    }
+    return -1;
+  };
+}
+</script>
+</head>
+	<body id='hot' onmouseup=cursorUp() onload=autoSave()>
+	<div id='video' style="position:absolute; top:32px; right:32px"></div>
+	
+	<form enctype="multipart/form-data" action="http://awbw.amarriner.com/uploadmap.php" method="post" name="UPLOAD" style="position:absolute; top:32px; left:16px">
+	
+	<div id='make'>
+	Height: <input type="text" name='updown' id="our" size=1>
+	Width:  <input type="text" name='leftright' id="house" size=1>
+	<br>
+	<input type="button" onclick=createMap(document.UPLOAD.leftright.value-1,document.UPLOAD.updown.value-1) value="makemap">
+	</div>
+	
+	<div id='brushes'style='visibility: hidden'>
+	PaintBrush: <input id='brush' type="checkbox">
+	<br>
+	SprayPaint: <input id='spray' type="checkbox">
+	<br>
+	Diameter:
+	<select id='dia'>
+	<option value=1>1
+	<option value=2>2
+	<option value=3>3
+	<option value=4>4
+	<option value=5>5
+	<option value=6>6
+	<option selected value=7>7
+	</select> 
+	 Density:
+	<select id='den'>
+	<option value=1>1
+	<option value=2>2
+	<option value=3>3
+	<option selected value=4>4
+	<option value=5>5
+	<option value=6>6
+	<option value=7>7
+	</select>
+	</div>
+	
+	<div id='symmetry'>
+	Symmetry:
+	<br>
+	<select id='sym' onchange=symmetry();>
+	<option value=0>none
+	<option value=1>4 Quadrant Rotational
+	<option value=5>2 Quadrant Rotational (from top)
+	<option value=3>2 Quadrant Rotational (from left)
+	<option value=2>Left to Right Flip
+	<option value=4>Top to Bottom Flip
+	<option value=6>Diaganol 1
+	<option value=7>Diaganol 2
+	</select>
+	</div>
+	
+	Pallet:
+	<br>
+	<select id='pal' onchange=palletSelect();>
+	<option value=1>Nature
+	<option value=2>Rivers
+	<option value=3>Roads
+	<option value=4>Pipes and Silos
+	<option value=5>Neutral
+	<option value=6>Orange Star
+	<option value=7>Blue Moon
+	<option value=8>Green Earth
+	<option value=9>Yellow Comet
+	<option value=10>Black Hole
+	<option value=11>Red Fire
+	<option value=12>Grey Sky
+	<option value=13>Brown Desert
+	<option value=14>Amber Blaze
+	<option value=15>Jade Sun
+	<option value=16>Cobalt Ice
+	<option value=17>Pink Cosmos
+	<option value=18>Teal Galaxy
+	<option value=19>Purple Lightning
+	<option value=20>Acid Rain
+	<option value=21>White Nova
+	</select>
+	<form name="tiles">
+	
+	<div style="position:absolute; top:250px; left:0;">
+
+<div id='0'>
+<div style='visibility: visible; position:absolute; width:350px;  bottom:0px;' id=1>
+<img id=blacktile src="./images/blacktile.gif" onclick=changeSelected('blacktile')>
+<img id=plain src="./images/plain.gif" onclick=changeSelected('plain')>
+<img id=mountain src="./images/mountain.gif" onclick=changeSelected('mountain')>
+<img id=wood src="./images/wood.gif" onclick=changeSelected('wood')>
+<img id=sea src="./images/sea.gif" onclick=changeSelected('sea')>
+<img id=hshoal src="./images/hshoal.gif" onclick=changeSelected('hshoal')>
+<img id=hshoaln src="./images/hshoaln.gif" onclick=changeSelected('hshoaln')>
+<img id=vshoal src="./images/vshoal.gif" onclick=changeSelected('vshoal')>
+<img id=vshoale src="./images/vshoale.gif" onclick=changeSelected('vshoale')>
+<img id=reef src="./images/reef.gif" onclick=changeSelected('reef')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=2>
+<img id=hriver src="./images/hriver.gif" onclick=changeSelected('hriver')>
+<img id=vriver src="./images/vriver.gif" onclick=changeSelected('vriver')>
+<img id=criver src="./images/criver.gif" onclick=changeSelected('criver')>
+<img id=esriver src="./images/esriver.gif" onclick=changeSelected('esriver')>
+<img id=swriver src="./images/swriver.gif" onclick=changeSelected('swriver')>
+<img id=wnriver src="./images/wnriver.gif" onclick=changeSelected('wnriver')>
+<img id=neriver src="./images/neriver.gif" onclick=changeSelected('neriver')>
+<img id=eswriver src="./images/eswriver.gif" onclick=changeSelected('eswriver')>
+<img id=swnriver src="./images/swnriver.gif" onclick=changeSelected('swnriver')>
+<img id=wneriver src="./images/wneriver.gif" onclick=changeSelected('wneriver')>
+<img id=nesriver src="./images/nesriver.gif" onclick=changeSelected('nesriver')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:-16px;' id=3>
+<img id=hroad src="./images/hroad.gif" onclick=changeSelected('hroad')>
+<img id=vroad src="./images/vroad.gif" onclick=changeSelected('vroad')>
+<img id=croad src="./images/croad.gif" onclick=changeSelected('croad')>
+<img id=esroad src="./images/esroad.gif" onclick=changeSelected('esroad')>
+<img id=swroad src="./images/swroad.gif" onclick=changeSelected('swroad')>
+<img id=wnroad src="./images/wnroad.gif" onclick=changeSelected('wnroad')>
+<img id=neroad src="./images/neroad.gif" onclick=changeSelected('neroad')>
+<img id=eswroad src="./images/eswroad.gif" onclick=changeSelected('eswroad')>
+<img id=swnroad src="./images/swnroad.gif" onclick=changeSelected('swnroad')>
+<img id=wneroad src="./images/wneroad.gif" onclick=changeSelected('wneroad')>
+<img id=nesroad src="./images/nesroad.gif" onclick=changeSelected('nesroad')>
+<br>
+<img id=hbridge src="./images/hbridge.gif" onclick=changeSelected('hbridge')>
+<img id=vbridge src="./images/vbridge.gif" onclick=changeSelected('vbridge')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:-16px;' id=4>
+<img id=vpipe src="./images/vpipe.gif" onclick=changeSelected('vpipe')>
+<img id=hpipe src="./images/hpipe.gif" onclick=changeSelected('hpipe')>
+<img id=nepipe src="./images/nepipe.gif" onclick=changeSelected('nepipe')>
+<img id=espipe src="./images/espipe.gif" onclick=changeSelected('espipe')>
+<img id=swpipe src="./images/swpipe.gif" onclick=changeSelected('swpipe')>
+<img id=wnpipe src="./images/wnpipe.gif" onclick=changeSelected('wnpipe')>
+<img id=npipeend src="./images/npipeend.gif" onclick=changeSelected('npipeend')>
+<img id=epipeend src="./images/epipeend.gif" onclick=changeSelected('epipeend')>
+<img id=spipeend src="./images/spipeend.gif" onclick=changeSelected('spipeend')>
+<img id=wpipeend src="./images/wpipeend.gif" onclick=changeSelected('wpipeend')>
+<br>
+<img id=hpipeseam src="./images/hpipeseam.gif" onclick=changeSelected('hpipeseam')>
+<img id=vpipeseam src="./images/vpipeseam.gif" onclick=changeSelected('vpipeseam')>
+<img id=hpiperubble src="./images/hpiperubble.gif" onclick=changeSelected('hpiperubble')>
+<img id=vpiperubble src="./images/vpiperubble.gif" onclick=changeSelected('vpiperubble')>
+<img id=missilesilo src="./images/missilesilo.gif" onclick=changeSelected('missilesilo')>
+<img id=missilesiloempty src="./images/missilesiloempty.gif" onclick=changeSelected('missilesiloempty')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=5>
+<img id=neutralairport src="./images/neutralairport.gif" onclick=changeSelected('neutralairport')>
+<img id=neutralbase src="./images/neutralbase.gif" onclick=changeSelected('neutralbase')>
+<img id=neutralcity src="./images/neutralcity.gif" onclick=changeSelected('neutralcity')>
+<img id=neutralcomtower src="./images/neutralcomtower.gif" onclick=changeSelected('neutralcomtower')>
+<img id=neutrallab src="./images/neutrallab.gif" onclick=changeSelected('neutrallab')>
+<img id=neutralport src="./images/neutralport.gif" onclick=changeSelected('neutralport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=6>
+<img id=orangestarairport src="./images/orangestarairport.gif" onclick=changeSelected('orangestarairport')>
+<img id=orangestarbase src="./images/orangestarbase.gif" onclick=changeSelected('orangestarbase')>
+<img id=orangestarcity src="./images/orangestarcity.gif" onclick=changeSelected('orangestarcity')>
+<img id=orangestarcomtower src="./images/orangestarcomtower.gif" onclick=changeSelected('orangestarcomtower')>
+<img id=orangestarhq src="./images/orangestarhq.gif" onclick=changeSelected('orangestarhq')>
+<img id=orangestarlab src="./images/orangestarlab.gif" onclick=changeSelected('orangestarlab')>
+<img id=orangestarport src="./images/orangestarport.gif" onclick=changeSelected('orangestarport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=7>
+<img id=bluemoonairport src="./images/bluemoonairport.gif" onclick=changeSelected('bluemoonairport')>
+<img id=bluemoonbase src="./images/bluemoonbase.gif" onclick=changeSelected('bluemoonbase')>
+<img id=bluemooncity src="./images/bluemooncity.gif" onclick=changeSelected('bluemooncity')>
+<img id=bluemooncomtower src="./images/bluemooncomtower.gif" onclick=changeSelected('bluemooncomtower')>
+<img id=bluemoonhq src="./images/bluemoonhq.gif" onclick=changeSelected('bluemoonhq')>
+<img id=bluemoonlab src="./images/bluemoonlab.gif" onclick=changeSelected('bluemoonlab')>
+<img id=bluemoonport src="./images/bluemoonport.gif" onclick=changeSelected('bluemoonport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=8>
+<img id=greenearthairport src="./images/greenearthairport.gif" onclick=changeSelected('greenearthairport')>
+<img id=greenearthbase src="./images/greenearthbase.gif" onclick=changeSelected('greenearthbase')>
+<img id=greenearthcity src="./images/greenearthcity.gif" onclick=changeSelected('greenearthcity')>
+<img id=greenearthcomtower src="./images/greenearthcomtower.gif" onclick=changeSelected('greenearthcomtower')>
+<img id=greenearthhq src="./images/greenearthhq.gif" onclick=changeSelected('greenearthhq')>
+<img id=greenearthlab src="./images/greenearthlab.gif" onclick=changeSelected('greenearthlab')>
+<img id=greenearthport src="./images/greenearthport.gif" onclick=changeSelected('greenearthport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=9>
+<img id=yellowcometairport src="./images/yellowcometairport.gif" onclick=changeSelected('yellowcometairport')>
+<img id=yellowcometbase src="./images/yellowcometbase.gif" onclick=changeSelected('yellowcometbase')>
+<img id=yellowcometcity src="./images/yellowcometcity.gif" onclick=changeSelected('yellowcometcity')>
+<img id=yellowcometcomtower src="./images/yellowcometcomtower.gif" onclick=changeSelected('yellowcometcomtower')>
+<img id=yellowcomethq src="./images/yellowcomethq.gif" onclick=changeSelected('yellowcomethq')>
+<img id=yellowcometlab src="./images/yellowcometlab.gif" onclick=changeSelected('yellowcometlab')>
+<img id=yellowcometport src="./images/yellowcometport.gif" onclick=changeSelected('yellowcometport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=10>
+<img id=blackholeairport src="./images/blackholeairport.gif" onclick=changeSelected('blackholeairport')>
+<img id=blackholebase src="./images/blackholebase.gif" onclick=changeSelected('blackholebase')>
+<img id=blackholecity src="./images/blackholecity.gif" onclick=changeSelected('blackholecity')>
+<img id=blackholecomtower src="./images/blackholecomtower.gif" onclick=changeSelected('blackholecomtower')>
+<img id=blackholehq src="./images/blackholehq.gif" onclick=changeSelected('blackholehq')>
+<img id=blackholelab src="./images/blackholelab.gif" onclick=changeSelected('blackholelab')>
+<img id=blackholeport src="./images/blackholeport.gif" onclick=changeSelected('blackholeport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=11>
+<img id=redfireairport src="./images/redfireairport.gif" onclick=changeSelected('redfireairport')>
+<img id=redfirebase src="./images/redfirebase.gif" onclick=changeSelected('redfirebase')>
+<img id=redfirecity src="./images/redfirecity.gif" onclick=changeSelected('redfirecity')>
+<img id=redfirecomtower src="./images/redfirecomtower.gif" onclick=changeSelected('redfirecomtower')>
+<img id=redfirehq src="./images/redfirehq.gif" onclick=changeSelected('redfirehq')>
+<img id=redfirelab src="./images/redfirelab.gif" onclick=changeSelected('redfirelab')>
+<img id=redfireport src="./images/redfireport.gif" onclick=changeSelected('redfireport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=12>
+<img id=greyskyairport src="./images/greyskyairport.gif" onclick=changeSelected('greyskyairport')>
+<img id=greyskybase src="./images/greyskybase.gif" onclick=changeSelected('greyskybase')>
+<img id=greyskycity src="./images/greyskycity.gif" onclick=changeSelected('greyskycity')>
+<img id=greyskycomtower src="./images/greyskycomtower.gif" onclick=changeSelected('greyskycomtower')>
+<img id=greyskyhq src="./images/greyskyhq.gif" onclick=changeSelected('greyskyhq')>
+<img id=greyskylab src="./images/greyskylab.gif" onclick=changeSelected('greyskylab')>
+<img id=greyskyport src="./images/greyskyport.gif" onclick=changeSelected('greyskyport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=13>
+<img id=browndesertairport src="./images/browndesertairport.gif" onclick=changeSelected('browndesertairport')>
+<img id=browndesertbase src="./images/browndesertbase.gif" onclick=changeSelected('browndesertbase')>
+<img id=browndesertcity src="./images/browndesertcity.gif" onclick=changeSelected('browndesertcity')>
+<img id=browndesertcomtower src="./images/browndesertcomtower.gif" onclick=changeSelected('browndesertcomtower')>
+<img id=browndeserthq src="./images/browndeserthq.gif" onclick=changeSelected('browndeserthq')>
+<img id=browndesertlab src="./images/browndesertlab.gif" onclick=changeSelected('browndesertlab')>
+<img id=browndesertport src="./images/browndesertport.gif" onclick=changeSelected('browndesertport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=14>
+<img id=amberblazeairport src="./images/amberblazeairport.gif" onclick=changeSelected('amberblazeairport')>
+<img id=amberblazebase src="./images/amberblazebase.gif" onclick=changeSelected('amberblazebase')>
+<img id=amberblazecity src="./images/amberblazecity.gif" onclick=changeSelected('amberblazecity')>
+<img id=amberblazecomtower src="./images/amberblazecomtower.gif" onclick=changeSelected('amberblazecomtower')>
+<img id=amberblazehq src="./images/amberblazehq.gif" onclick=changeSelected('amberblazehq')>
+<img id=amberblazelab src="./images/amberblazelab.gif" onclick=changeSelected('amberblazelab')>
+<img id=amberblazeport src="./images/amberblazeport.gif" onclick=changeSelected('amberblazeport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=15>
+<img id=jadesunairport src="./images/jadesunairport.gif" onclick=changeSelected('jadesunairport')>
+<img id=jadesunbase src="./images/jadesunbase.gif" onclick=changeSelected('jadesunbase')>
+<img id=jadesuncity src="./images/jadesuncity.gif" onclick=changeSelected('jadesuncity')>
+<img id=jadesuncomtower src="./images/jadesuncomtower.gif" onclick=changeSelected('jadesuncomtower')>
+<img id=jadesunhq src="./images/jadesunhq.gif" onclick=changeSelected('jadesunhq')>
+<img id=jadesunlab src="./images/jadesunlab.gif" onclick=changeSelected('jadesunlab')>
+<img id=jadesunport src="./images/jadesunport.gif" onclick=changeSelected('jadesunport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=16>
+<img id=cobalticeairport src="./images/cobalticeairport.gif" onclick=changeSelected('cobalticeairport')>
+<img id=cobalticebase src="./images/cobalticebase.gif" onclick=changeSelected('cobalticebase')>
+<img id=cobalticecity src="./images/cobalticecity.gif" onclick=changeSelected('cobalticecity')>
+<img id=cobalticecomtower src="./images/cobalticecomtower.gif" onclick=changeSelected('cobalticecomtower')>
+<img id=cobalticehq src="./images/cobalticehq.gif" onclick=changeSelected('cobalticehq')>
+<img id=cobalticelab src="./images/cobalticelab.gif" onclick=changeSelected('cobalticelab')>
+<img id=cobalticeport src="./images/cobalticeport.gif" onclick=changeSelected('cobalticeport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=17>
+<img id=pinkcosmosairport src="./images/pinkcosmosairport.gif" onclick=changeSelected('pinkcosmosairport')>
+<img id=pinkcosmosbase src="./images/pinkcosmosbase.gif" onclick=changeSelected('pinkcosmosbase')>
+<img id=pinkcosmoscity src="./images/pinkcosmoscity.gif" onclick=changeSelected('pinkcosmoscity')>
+<img id=pinkcosmoscomtower src="./images/pinkcosmoscomtower.gif" onclick=changeSelected('pinkcosmoscomtower')>
+<img id=pinkcosmoshq src="./images/pinkcosmoshq.gif" onclick=changeSelected('pinkcosmoshq')>
+<img id=pinkcosmoslab src="./images/pinkcosmoslab.gif" onclick=changeSelected('pinkcosmoslab')>
+<img id=pinkcosmosport src="./images/pinkcosmosport.gif" onclick=changeSelected('pinkcosmosport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=18>
+<img id=tealgalaxyairport src="./images/tealgalaxyairport.gif" onclick=changeSelected('tealgalaxyairport')>
+<img id=tealgalaxybase src="./images/tealgalaxybase.gif" onclick=changeSelected('tealgalaxybase')>
+<img id=tealgalaxycity src="./images/tealgalaxycity.gif" onclick=changeSelected('tealgalaxycity')>
+<img id=tealgalaxycomtower src="./images/tealgalaxycomtower.gif" onclick=changeSelected('tealgalaxycomtower')>
+<img id=tealgalaxyhq src="./images/tealgalaxyhq.gif" onclick=changeSelected('tealgalaxyhq')>
+<img id=tealgalaxylab src="./images/tealgalaxylab.gif" onclick=changeSelected('tealgalaxylab')>
+<img id=tealgalaxyport src="./images/tealgalaxyport.gif" onclick=changeSelected('tealgalaxyport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=19>
+<img id=purplelightningairport src="./images/purplelightningairport.gif" onclick=changeSelected('purplelightningairport')>
+<img id=purplelightningbase src="./images/purplelightningbase.gif" onclick=changeSelected('purplelightningbase')>
+<img id=purplelightningcity src="./images/purplelightningcity.gif" onclick=changeSelected('purplelightningcity')>
+<img id=purplelightningcomtower src="./images/purplelightningcomtower.gif" onclick=changeSelected('purplelightningcomtower')>
+<img id=purplelightninghq src="./images/purplelightninghq.gif" onclick=changeSelected('purplelightninghq')>
+<img id=purplelightninglab src="./images/purplelightninglab.gif" onclick=changeSelected('purplelightninglab')>
+<img id=purplelightningport src="./images/purplelightningport.gif" onclick=changeSelected('purplelightningport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=20>
+<img id=acidrainairport src="./images/acidrainairport.gif" onclick=changeSelected('acidrainairport')>
+<img id=acidrainbase src="./images/acidrainbase.gif" onclick=changeSelected('acidrainbase')>
+<img id=acidraincity src="./images/acidraincity.gif" onclick=changeSelected('acidraincity')>
+<img id=acidraincomtower src="./images/acidraincomtower.gif" onclick=changeSelected('acidraincomtower')>
+<img id=acidrainhq src="./images/acidrainhq.gif" onclick=changeSelected('acidrainhq')>
+<img id=acidrainlab src="./images/acidrainlab.gif" onclick=changeSelected('acidrainlab')>
+<img id=acidrainport src="./images/acidrainport.gif" onclick=changeSelected('acidrainport')>
+</div>
+
+<div style='visibility: hidden; position:absolute; width:350px;  bottom:0px;' id=21>
+<img id=whitenovaairport src="./images/whitenovaairport.gif" onclick=changeSelected('whitenovaairport')>
+<img id=whitenovabase src="./images/whitenovabase.gif" onclick=changeSelected('whitenovabase')>
+<img id=whitenovacity src="./images/whitenovacity.gif" onclick=changeSelected('whitenovacity')>
+<img id=whitenovacomtower src="./images/whitenovacomtower.gif" onclick=changeSelected('whitenovacomtower')>
+<img id=whitenovahq src="./images/whitenovahq.gif" onclick=changeSelected('whitenovahq')>
+<img id=whitenovalab src="./images/whitenovalab.gif" onclick=changeSelected('whitenovalab')>
+<img id=whitenovaport src="./images/whitenovaport.gif" onclick=changeSelected('whitenovaport')>
+</div>
+</div>
+</div>
+<div id='hulu' style='position:absolute; top:330px; left:0px;'><div id='chosen' style='position:absolute; bottom: 30px;'>Selected:<img id='imgchosen' src="./images/plain.gif" style='position:absolute; left:60px; bottom: 0px;'></div></div>
+<div id='mapstorage' style='position:absolute; top:300px; left:0px;'>
+	<textarea id="map" style="position: absolute;" rows='5'></textarea>
+	<input type="button" onclick=saveMap() value="savemap" style='position:absolute; top:110px; left:0px;'>
+	<input type="button" onclick=loadMap() value="loadmap" style='position:absolute; top:110px; left:90px;'>
+
+	<div style='position:absolute; top:135px; left:0px;'>AutoSave:<input id='asave' style='position:absolute; left:65px;' type="checkbox"></div>
+		
+	<div id='props' style='position:absolute; top:300px; left:0px;'>
+	<div style='position:absolute; bottom:120px; left:0px;'>Property Count:</div>
+	<div style='position:absolute; bottom:75px; left:40px;'><img src="./images/neutralairport.gif"><div id='acount'>0</div></div>
+	<div style='position:absolute; bottom:75px; left:20px;'><img src="./images/neutralbase.gif"><div id='bcount'>0</div></div>
+	<div style='position:absolute; bottom:75px; left:0px;'><img src="./images/neutralcity.gif"><div id='ccount'>0</div></div>
+	<div style='position:absolute; bottom:75px; left:60px;'><img src="./images/neutralport.gif"><div id='pcount'>0</div></div>
+	<div style='position:absolute; bottom:75px; left:80px;'><img src="./images/neutrallab.gif"><div id='lcount'>0</div></div>
+	<div style='position:absolute; bottom:75px; left:100px;'><img src="./images/neutralcomtower.gif"><div id='comcount'>0</div></div>
+	<div id='hq' style='position:absolute; bottom:50px; left:0px;'></div>
+	</div>
+	</div>
+	
+	</form>
+	</form>
+	</body>
+	
+</html>
